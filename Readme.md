@@ -347,22 +347,6 @@ Ensure all required environment variables are set in production:
 - Set up monitoring and logging
 - Use environment-specific configurations
 
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the ISC License.
-
-## 👨‍💻 Author
-
-**Rohit Sirvi**
-
 ---
 
 ## 🎯 Future Enhancements
