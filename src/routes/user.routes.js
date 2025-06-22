@@ -40,9 +40,9 @@ router.post("/refresh-token",refreshAccessToken)
 
 router.post("/change-password",verifyJWT,changePassword)
 
-router.post("current-user",getCurrentUser)
+router.get("/current-user", verifyJWT, getCurrentUser)
 
-router.patch("update-account",verifyJWT,updateAccountDetails)
+router.patch("/update-account",verifyJWT,updateAccountDetails)
 
 router.patch("/changeAvatar",
     verifyJWT,
@@ -50,7 +50,7 @@ router.patch("/changeAvatar",
     updateUserAvatar
 )
 
-router.post("/changecoverImage",
+router.patch("/changecoverImage",
     verifyJWT,
     upload.single("coverImage"),
     updateUserCoverImage

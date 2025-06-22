@@ -6,6 +6,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import { verifyJWT } from "../middlewares/Auth.middleware.js"
 import { Subscription } from "../models/subcription.model.js"
+import mongoose from "mongoose"
 
 
 
@@ -285,9 +286,9 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
         throw new ApiError(500,"error while uploading on avatar")
     }
 
-    // const oldAvatar = await User.findById(req.user?._id).select("-password")
+    const oldAvatar = await User.findById(req.user?._id).select("-password")
 
-    // console.log(oldAvatar.avatar);
+    console.log(oldAvatar.avatar);
 
     const user = await User.findByIdAndUpdate(
         req.user?._id,
@@ -300,7 +301,7 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
     ).select("-password");
 
     // cloudinary need public_id and we are story url in the DataBase 
-    // await DeleteFromCloudinary(oldAvatar.avatar)
+    await DeleteFromCloudinary(oldAvatar.avatar.split('/').pop().split('.')[0])
 
     return res
     .status(200)
@@ -344,15 +345,16 @@ const updateUserCoverImage = asyncHandler(async(req,res)=>{
 })
 
 const getUserChannelProfile = asyncHandler(async(req,res)=>{
-    const {username} = req.params
+    const { username } = req.params
 
     if(!username?.trim()){
-        throw new ApiError(400, "useername is missing")
+        throw new ApiError(400, "username is missing")
     }
+    console.log(typeof(username))
     const channelDetail = await User.aggregate([
         {
-            $match:{
-                username:username?.toLowerCase()
+            "$match":{
+                "username":username
             }
         },
         {
@@ -379,7 +381,7 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
                 channelsSubscribedToCount:{
                     $size:"$subscribedTo"
                 },
-                isSibscribed:{
+                isSubscribed:{
                     $cond:{
                         if:{$in:[req.user?._id, "$subscribers.subscriber"]},
                         then:true,
@@ -395,14 +397,15 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
                 email:1,
                 SubscribersCount:1,
                 channelsSubscribedToCount:1,
-                isSibscribed:1,
+                isSubscribed:1,
                 avatar:1,
                 coverImage:1,
             }
         }
     ])
 
-    if(!channelDetail?.lenght){
+    console.log(channelDetail)
+    if(!channelDetail?.length){
         throw new ApiError(404,"channel does not exists")
     }
 
