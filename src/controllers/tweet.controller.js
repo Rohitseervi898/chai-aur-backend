@@ -72,7 +72,7 @@ const updateTweet = asyncHandler(async(req,res)=>{
     const { tweetId } = req.params;
     const { content } = req.body;
 
-    if(!tweetId){
+    if(!isValidObjectId(tweetId)){
         throw new ApiError(404, "tweet not found")
     }
     if(!content.trim()){
@@ -101,8 +101,8 @@ const updateTweet = asyncHandler(async(req,res)=>{
 const deleteTweet = asyncHandler(async(req,res)=>{
     const { tweetId } = req.params;
 
-    if(!tweetId){
-        throw new ApiError(401, "tweet id is required")
+    if(!isValidObjectId(tweetId)){
+        throw new ApiError(401, "tweet id is not valid")
     }
 
     const tweet = await Tweet.findByIdAndDelete(tweetId)

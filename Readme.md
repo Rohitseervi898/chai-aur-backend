@@ -51,7 +51,8 @@ Backend/
 ├── src/
 │   ├── controllers/          # Request handlers
 │   │   ├── user.controller.js
-│   │   └── tweet.controller.js
+│   │   ├── tweet.controller.js
+│   │   └── video.controller.js
 │   ├── models/              # Database models
 │   │   ├── user.model.js
 │   │   ├── tweet.model.js
@@ -59,10 +60,11 @@ Backend/
 │   │   ├── comment.model.js
 │   │   ├── like.model.js
 │   │   ├── playlist.model.js
-│   │   └── subscription.model.js
+│   │   └── subcription.model.js
 │   ├── routes/              # API routes
 │   │   ├── user.routes.js
-│   │   └── tweet.route.js
+│   │   ├── tweet.route.js
+│   │   └── video.route.js
 │   ├── middlewares/         # Custom middleware
 │   │   ├── Auth.middleware.js
 │   │   └── multer.middleware.js
@@ -279,6 +281,59 @@ DELETE /tweets/:tweetId
 Authorization: Bearer <access_token>
 ```
 
+### Video Endpoints
+
+#### Get All Videos
+```http
+GET /videos
+Authorization: Bearer <access_token>
+```
+
+#### Publish a Video
+```http
+POST /videos
+Authorization: Bearer <access_token>
+Content-Type: multipart/form-data
+
+{
+  "title": "My Video Title",
+  "description": "Video description",
+  "videoFile": [file],
+  "thumbnail": [file]
+}
+```
+
+#### Get Video by ID
+```http
+GET /videos/:videoId
+Authorization: Bearer <access_token>
+```
+
+#### Update Video
+```http
+PATCH /videos/:videoId
+Authorization: Bearer <access_token>
+Content-Type: multipart/form-data
+
+{
+  "title": "Updated Title",
+  "description": "Updated description",
+  "thumbnail": [file]
+}
+```
+
+#### Delete Video
+```http
+DELETE /videos/:videoId
+Authorization: Bearer <access_token>
+```
+
+#### Toggle Publish Status
+```http
+PATCH /videos/toggle/publish/:videoId
+Authorization: Bearer <access_token>
+```
+
 ## 🔐 Authentication
 
 The API uses JWT (JSON Web Tokens) for authentication:
@@ -311,7 +366,7 @@ Authorization: Bearer <access_token>
 - `timestamps`: Created and updated timestamps
 
 ### Video Model
-- `VideoFile`: Cloudinary URL for video file
+- `videoFile`: Cloudinary URL for video file
 - `thumbnail`: Cloudinary URL for video thumbnail
 - `title`: Video title
 - `description`: Video description
@@ -319,6 +374,31 @@ Authorization: Bearer <access_token>
 - `views`: View count
 - `isPublished`: Publication status
 - `owner`: Reference to User model
+
+### Comment Model
+- `content`: Comment text
+- `video`: Reference to Video
+- `owner`: Reference to User
+- `timestamps`: Created and updated timestamps
+
+### Like Model
+- `comment`: Reference to Comment
+- `video`: Reference to Video
+- `likedBy`: Reference to User
+- `tweet`: Reference to Tweet
+- `timestamps`: Created and updated timestamps
+
+### Playlist Model
+- `name`: Playlist name
+- `description`: Playlist description
+- `videos`: Array of Video references
+- `owner`: Reference to User
+- `timestamps`: Created and updated timestamps
+
+### Subscription Model
+- `subscriber`: Reference to User (the follower)
+- `channel`: Reference to User (the followed)
+- `timestamps`: Created and updated timestamps
 
 ## 🛡️ Security Features
 
@@ -346,8 +426,6 @@ Ensure all required environment variables are set in production:
 - Configure proper MongoDB indexes
 - Set up monitoring and logging
 - Use environment-specific configurations
-
----
 
 ## 🎯 Future Enhancements
 
