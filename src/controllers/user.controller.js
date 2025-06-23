@@ -5,7 +5,7 @@ import {DeleteFromCloudinary, uploadOnCloudinary} from "../utils/cloudinary.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken"
 import { verifyJWT } from "../middlewares/Auth.middleware.js"
-import { Subscription } from "../models/subcription.model.js"
+import { Subscription } from "../models/subscription.model.js"
 import mongoose from "mongoose"
 
 
@@ -353,8 +353,8 @@ const getUserChannelProfile = asyncHandler(async(req,res)=>{
     console.log(typeof(username))
     const channelDetail = await User.aggregate([
         {
-            "$match":{
-                "username":username
+            $match:{
+                username:username
             }
         },
         {

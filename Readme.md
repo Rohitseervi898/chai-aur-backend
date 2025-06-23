@@ -334,6 +334,26 @@ PATCH /videos/toggle/publish/:videoId
 Authorization: Bearer <access_token>
 ```
 
+### Comment Endpoints
+
+#### Get All Comments for a Video
+```http
+GET /comments?videoId=<videoId>
+Authorization: Bearer <access_token>
+```
+- Returns all comments related to the specified video.
+
+**MongoDB Aggregation $match Example:**
+```js
+{
+  $match: {
+    video: new mongoose.Types.ObjectId(videoId)
+  }
+}
+```
+
+---
+
 ## 🔐 Authentication
 
 The API uses JWT (JSON Web Tokens) for authentication:
@@ -377,7 +397,7 @@ Authorization: Bearer <access_token>
 
 ### Comment Model
 - `content`: Comment text
-- `video`: Reference to Video
+- `video`: Reference to Video (the video this comment belongs to)
 - `owner`: Reference to User
 - `timestamps`: Created and updated timestamps
 

@@ -1,0 +1,63 @@
+Here’s how you would set up a **Postman** request for the `getAllVideos` endpoint:
+
+---
+
+## **Step-by-Step Postman Example**
+
+### 1. **Set the Request Type and URL**
+- **Method:** `GET`
+- **URL:**  
+  ```
+  http://localhost:8000/api/v1/videos
+  ```
+
+### 2. **Add Query Parameters**
+Go to the **Params** tab in Postman and add the following key-value pairs:
+
+| KEY      | VALUE         | DESCRIPTION                        |
+|----------|--------------|------------------------------------|
+| page     | 2            | (optional) Page number             |
+| limit    | 5            | (optional) Videos per page         |
+| query    | cat          | (optional) Search term             |
+| sortBy   | views        | (optional) Field to sort by        |
+| sortType | desc         | (optional) Sort order              |
+| userId   | 64f1c2a...   | (optional) Filter by uploader      |
+
+**Example:**
+
+| KEY      | VALUE         |
+|----------|--------------|
+| page     | 2            |
+| limit    | 5            |
+| query    | cat          |
+| sortBy   | views        |
+| sortType | desc         |
+| userId   | 64f1c2a...   |
+
+### 3. **(If Authenticated) Add Authorization**
+If your endpoint requires authentication, go to the **Authorization** tab:
+- **Type:** Bearer Token
+- **Token:** `<your_access_token>`
+
+### 4. **Send the Request**
+Click **Send**.  
+You will receive a JSON response with the paginated, filtered, and sorted list of videos.
+
+---
+
+## **Screenshot Example**
+
+Here’s how your Postman setup would look:
+
+- **GET** `http://localhost:8000/api/v1/videos?page=2&limit=5&query=cat&sortBy=views&sortType=desc&userId=64f1c2a...`
+
+---
+
+## **Raw cURL Example (for reference)**
+```bash
+curl -X GET \"http://localhost:8000/api/v1/videos?page=2&limit=5&query=cat&sortBy=views&sortType=desc&userId=64f1c2a...\" -H \"Authorization: Bearer <your_access_token>\"
+```
+
+---
+
+**Let me know if you want a sample Postman collection file (.json) to import directly!**
