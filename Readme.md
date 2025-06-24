@@ -1,6 +1,6 @@
 # Chai Aur Backend - Social Media API
 
-A comprehensive backend API for a social media platform built with Node.js, Express, and MongoDB. This project provides user authentication, tweet management, video sharing, and social features like subscriptions and watch history.
+A comprehensive backend API for a social media platform built with Node.js, Express, and MongoDB. This project provides user authentication, tweet management, video sharing, and social features like subscriptions, comments, likes, and watch history.
 
 ## 🚀 Features
 
@@ -16,7 +16,7 @@ A comprehensive backend API for a social media platform built with Node.js, Expr
 - **User Tweets**: Fetch tweets by username
 - **Subscription System**: Follow/unfollow other users
 - **Watch History**: Track video viewing history
-- **Like System**: Like/unlike content
+- **Like System**: Like/unlike videos, comments, and tweets
 - **Comment System**: Comment on videos and tweets
 - **Playlist Management**: Create and manage video playlists
 
@@ -52,7 +52,9 @@ Backend/
 │   ├── controllers/          # Request handlers
 │   │   ├── user.controller.js
 │   │   ├── tweet.controller.js
-│   │   └── video.controller.js
+│   │   ├── video.controller.js
+│   │   ├── comment.controller.js
+│   │   └── like.controller.js
 │   ├── models/              # Database models
 │   │   ├── user.model.js
 │   │   ├── tweet.model.js
@@ -60,11 +62,13 @@ Backend/
 │   │   ├── comment.model.js
 │   │   ├── like.model.js
 │   │   ├── playlist.model.js
-│   │   └── subcription.model.js
+│   │   └── subscription.model.js
 │   ├── routes/              # API routes
 │   │   ├── user.routes.js
 │   │   ├── tweet.route.js
-│   │   └── video.route.js
+│   │   ├── video.route.js
+│   │   ├── comment.route.js
+│   │   └── like.route.js
 │   ├── middlewares/         # Custom middleware
 │   │   ├── Auth.middleware.js
 │   │   └── multer.middleware.js
@@ -338,10 +342,38 @@ Authorization: Bearer <access_token>
 
 #### Get All Comments for a Video
 ```http
-GET /comments?videoId=<videoId>
+GET /comments/:videoId
 Authorization: Bearer <access_token>
 ```
 - Returns all comments related to the specified video.
+
+#### Add a Comment to a Video
+```http
+POST /comments/:videoId
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "content": "Nice video!"
+}
+```
+
+#### Update a Comment
+```http
+PATCH /comments/c/:commentId
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "content": "Updated comment text"
+}
+```
+
+#### Delete a Comment
+```http
+DELETE /comments/c/:commentId
+Authorization: Bearer <access_token>
+```
 
 **MongoDB Aggregation $match Example:**
 ```js
@@ -350,6 +382,32 @@ Authorization: Bearer <access_token>
     video: new mongoose.Types.ObjectId(videoId)
   }
 }
+```
+
+### Like Endpoints
+
+#### Like/Unlike a Video
+```http
+POST /likes/toggle/v/:videoId
+Authorization: Bearer <access_token>
+```
+
+#### Like/Unlike a Comment
+```http
+POST /likes/toggle/c/:commentId
+Authorization: Bearer <access_token>
+```
+
+#### Like/Unlike a Tweet
+```http
+POST /likes/toggle/t/:tweetId
+Authorization: Bearer <access_token>
+```
+
+#### Get All Liked Videos by User
+```http
+GET /likes/videos
+Authorization: Bearer <access_token>
 ```
 
 ---
