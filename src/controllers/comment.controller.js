@@ -14,12 +14,16 @@ const getVideoComments = asyncHandler(async (req,res) => {
         throw new ApiError(401,"VideoId id empty")
     }
 
+    const skip = (parseInt(page)-1)*parseInt(limit);
+
     const comments = await Comment.aggregate([
         {
             $match: {
                 video: new mongoose.Types.ObjectId(videoId)
             }
         },
+        {$skip:skip},
+        {$limit:parseInt(limit)}
     ])
 
     // console.log(comments)
