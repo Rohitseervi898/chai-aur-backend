@@ -14,7 +14,7 @@ A comprehensive backend API for a social media platform built with Node.js, Expr
 ### Social Features
 - **Tweet System**: Create, read, update, and delete tweets
 - **User Tweets**: Fetch tweets by username
-- **Subscription System**: Follow/unfollow other users
+- **Subscription System**: Follow/unfollow other users, get your subscriptions, and see your subscribers
 - **Watch History**: Track video viewing history
 - **Like System**: Like/unlike videos, comments, and tweets
 - **Comment System**: Comment on videos and tweets
@@ -54,7 +54,8 @@ Backend/
 │   │   ├── tweet.controller.js
 │   │   ├── video.controller.js
 │   │   ├── comment.controller.js
-│   │   └── like.controller.js
+│   │   ├── like.controller.js
+│   │   └── subscription.controller.js
 │   ├── models/              # Database models
 │   │   ├── user.model.js
 │   │   ├── tweet.model.js
@@ -68,7 +69,8 @@ Backend/
 │   │   ├── tweet.route.js
 │   │   ├── video.route.js
 │   │   ├── comment.route.js
-│   │   └── like.route.js
+│   │   ├── like.route.js
+│   │   └── subscription.route.js
 │   ├── middlewares/         # Custom middleware
 │   │   ├── Auth.middleware.js
 │   │   └── multer.middleware.js
@@ -410,6 +412,30 @@ GET /likes/videos
 Authorization: Bearer <access_token>
 ```
 
+### Subscription Endpoints
+
+#### Subscribe/Unsubscribe to a Channel
+```http
+POST /subscription/c/:channelId
+Authorization: Bearer <access_token>
+```
+- Subscribes the current user to the channel with id `channelId` if not already subscribed, otherwise unsubscribes.
+
+#### Get All Channels a User is Subscribed To
+```http
+GET /subscription/c/:subscriberId
+Authorization: Bearer <access_token>
+```
+- Returns all channels the user (subscriber) is subscribed to.
+- **Note:** The `subscriberId` should be the user's own ID.
+
+#### Get All Subscribers of a Channel
+```http
+GET /subscription/u/:channelId
+Authorization: Bearer <access_token>
+```
+- Returns all users who are subscribed to the channel with id `channelId`.
+
 ---
 
 ## 🔐 Authentication
@@ -474,9 +500,12 @@ Authorization: Bearer <access_token>
 - `timestamps`: Created and updated timestamps
 
 ### Subscription Model
-- `subscriber`: Reference to User (the follower)
-- `channel`: Reference to User (the followed)
+- `subscriber`: Reference to User (the follower, i.e., the user who is subscribing)
+- `channel`: Reference to User (the followed, i.e., the channel being subscribed to)
 - `timestamps`: Created and updated timestamps
+
+**To get all channels a user is subscribed to, query by `subscriber`.**
+**To get all subscribers of a channel, query by `channel`.**
 
 ## 🛡️ Security Features
 

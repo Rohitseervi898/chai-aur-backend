@@ -15,7 +15,7 @@ const toggleVideoLike = asyncHandler(async(req,res)=>{
     const exitingLike = await Like.findOne({video:videoId,likedBy:userId})
 
     if(exitingLike){
-        await Like.findByIdAndDelete({video:videoId,likedBy:userId})
+        await Like.findOneAndDelete({video:videoId,likedBy:userId})
 
         return res
         .status(200)
@@ -44,7 +44,7 @@ const toggleCommentLike = asyncHandler(async(req,res)=>{
     const exitingLike = await Like.findOne({comment:commentId,likedBy:userId})
 
     if(exitingLike){
-        await Like.findByIdAndDelete({comment:commentId,likedBy:userId})
+        await Like.findOneAndDelete({comment:commentId,likedBy:userId})
 
         return res
         .status(200)
@@ -73,7 +73,7 @@ const toggleTweetLike = asyncHandler(async(req,res)=>{
     const exitingLike = await Like.findOne({tweet:tweetId,likedBy:userId})
 
     if(exitingLike){
-        await Like.findByIdAndDelete({tweet:tweetId,likedBy:userId})
+        await Like.findOneAndDelete({tweet:tweetId,likedBy:userId})
 
         return res
         .status(200)
@@ -101,7 +101,7 @@ const getLikedVideos = asyncHandler(async(req,res)=>{
 
     return res.status(200).json(new ApiResponse(200,videos,"success"))
 })
-
+ 
 export {
     toggleCommentLike,
     toggleVideoLike,
