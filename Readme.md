@@ -1,6 +1,6 @@
 # Chai Aur Backend - Social Media API
 
-A comprehensive backend API for a social media platform built with Node.js, Express, and MongoDB. This project provides user authentication, tweet management, video sharing, and social features like subscriptions, comments, likes, and watch history.
+A comprehensive backend API for a social media platform built with Node.js, Express, and MongoDB. This project provides user authentication, tweet management, video sharing, and social features like subscriptions, comments, likes, playlists, and watch history.
 
 ## 🚀 Features
 
@@ -18,7 +18,7 @@ A comprehensive backend API for a social media platform built with Node.js, Expr
 - **Watch History**: Track video viewing history
 - **Like System**: Like/unlike videos, comments, and tweets
 - **Comment System**: Comment on videos and tweets
-- **Playlist Management**: Create and manage video playlists
+- **Playlist Management**: Create, update, delete, and manage video playlists
 
 ### Media Management
 - **Video Upload**: Upload videos with thumbnails
@@ -55,7 +55,8 @@ Backend/
 │   │   ├── video.controller.js
 │   │   ├── comment.controller.js
 │   │   ├── like.controller.js
-│   │   └── subscription.controller.js
+│   │   ├── subscription.controller.js
+│   │   └── playlist.controller.js
 │   ├── models/              # Database models
 │   │   ├── user.model.js
 │   │   ├── tweet.model.js
@@ -70,7 +71,8 @@ Backend/
 │   │   ├── video.route.js
 │   │   ├── comment.route.js
 │   │   ├── like.route.js
-│   │   └── subscription.route.js
+│   │   ├── subscription.route.js
+│   │   └── playlist.route.js
 │   ├── middlewares/         # Custom middleware
 │   │   ├── Auth.middleware.js
 │   │   └── multer.middleware.js
@@ -435,6 +437,63 @@ GET /subscription/u/:channelId
 Authorization: Bearer <access_token>
 ```
 - Returns all users who are subscribed to the channel with id `channelId`.
+
+
+### Playlist Endpoints
+
+#### Create a Playlist
+```http
+POST /playlist
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "name": "My Playlist",
+  "description": "A collection of my favorite videos"
+}
+```
+
+#### Get All Playlists for a User
+```http
+GET /playlist/user/:userId
+Authorization: Bearer <access_token>
+```
+
+#### Get Playlist by ID
+```http
+GET /playlist/:playlistId
+Authorization: Bearer <access_token>
+```
+
+#### Update Playlist
+```http
+PATCH /playlist/:playlistId
+Authorization: Bearer <access_token>
+Content-Type: application/json
+
+{
+  "name": "Updated Playlist Name",
+  "description": "Updated description"
+}
+```
+
+#### Delete Playlist
+```http
+DELETE /playlist/:playlistId
+Authorization: Bearer <access_token>
+```
+
+#### Add Video to Playlist
+```http
+PATCH /playlist/add/:videoId/:playlistId
+Authorization: Bearer <access_token>
+```
+
+#### Remove Video from Playlist
+```http
+PATCH /playlist/remove/:videoId/:playlistId
+Authorization: Bearer <access_token>
+```
 
 ---
 
