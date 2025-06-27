@@ -1,6 +1,6 @@
 # Chai Aur Backend - Social Media API
 
-A comprehensive backend API for a social media platform built with Node.js, Express, and MongoDB. This project provides user authentication, tweet management, video sharing, and social features like subscriptions, comments, likes, playlists, and watch history.
+A comprehensive backend API for a social media platform built with Node.js, Express, and MongoDB. This project provides user authentication, tweet management, video sharing, and social features like subscriptions, comments, likes, playlists, dashboards, and watch history.
 
 ## 🚀 Features
 
@@ -19,6 +19,7 @@ A comprehensive backend API for a social media platform built with Node.js, Expr
 - **Like System**: Like/unlike videos, comments, and tweets
 - **Comment System**: Comment on videos and tweets
 - **Playlist Management**: Create, update, delete, and manage video playlists
+- **Dashboard**: Get channel stats and videos for the authenticated user
 
 ### Media Management
 - **Video Upload**: Upload videos with thumbnails
@@ -56,7 +57,9 @@ Backend/
 │   │   ├── comment.controller.js
 │   │   ├── like.controller.js
 │   │   ├── subscription.controller.js
-│   │   └── playlist.controller.js
+│   │   ├── playlist.controller.js
+│   │   ├── dashboard.controller.js
+│   │   └── healthcheck.controller.js
 │   ├── models/              # Database models
 │   │   ├── user.model.js
 │   │   ├── tweet.model.js
@@ -72,7 +75,9 @@ Backend/
 │   │   ├── comment.route.js
 │   │   ├── like.route.js
 │   │   ├── subscription.route.js
-│   │   └── playlist.route.js
+│   │   ├── playlist.route.js
+│   │   ├── dashboard.routes.js
+│   │   └── healthcheck.routes.js
 │   ├── middlewares/         # Custom middleware
 │   │   ├── Auth.middleware.js
 │   │   └── multer.middleware.js
@@ -141,6 +146,39 @@ The server will start on `http://localhost:8000`
 ```
 http://localhost:8000/api/v1
 ```
+
+### Healthcheck Endpoint
+
+#### Service Healthcheck
+```http
+GET /healthcheck
+```
+- Returns a simple status message to verify the service is running.
+- **Example Response:**
+```json
+{
+  "statusCode": 200,
+  "data": { "status": "OK" },
+  "message": "Service is running smoothly",
+  "success": true
+}
+```
+
+### Dashboard Endpoints
+
+#### Get Channel Stats (Authenticated User)
+```http
+GET /dashboard/stats
+Authorization: Bearer <access_token>
+```
+- Returns total videos, subscribers, likes, and views for the authenticated user's channel.
+
+#### Get Channel Videos (Authenticated User)
+```http
+GET /dashboard/videos
+Authorization: Bearer <access_token>
+```
+- Returns all videos uploaded by the authenticated user, sorted by creation date.
 
 ### Authentication Endpoints
 
@@ -437,7 +475,6 @@ GET /subscription/u/:channelId
 Authorization: Bearer <access_token>
 ```
 - Returns all users who are subscribed to the channel with id `channelId`.
-
 
 ### Playlist Endpoints
 
